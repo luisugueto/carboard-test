@@ -14,6 +14,9 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
+            $table->text('comentario');
+            $table->integer('videos_id')->unsigned();
+            $table->foreign('videos_id')->references('id')->on('videos')->onDelete('Cascade');
             $table->timestamps();
         });
     }

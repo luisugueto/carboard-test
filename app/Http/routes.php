@@ -12,12 +12,13 @@
 */
 
     Route::get('/', 'VideosController@index');
+    Route::get('/description/{id}', ['uses' => 'VideosController@ver', 'as' => 'videos.ver']);
 
 Route::group(['middleware' => 'web'], function () {
    
     Route::auth();
     
-    Route::get('/home', 'HomeController@index');
+    Route::resource('videos', 'VideosController');
 });
 
 

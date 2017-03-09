@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Videos;
 
 class VideosController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth', ['except'=>['index']]);
+        $this->middleware('auth', ['only'=>['create']]);
     }
     /**
      * Display a listing of the resource.
@@ -18,7 +19,9 @@ class VideosController extends Controller
      */
     public function index()
     {
-        return 'hola';
+        $videos = Videos::all();
+        
+        return view('home', compact('videos'));
     }
 
     /**
@@ -85,5 +88,10 @@ class VideosController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function ver($id){
+        $videos = Videos::find($id);
+        dd($videos);
     }
 }

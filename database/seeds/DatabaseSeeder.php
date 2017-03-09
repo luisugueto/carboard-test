@@ -11,10 +11,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('users')->insert([
+        DB::table('roles')->insert([
+            'name' => 'Admin',
+        ]);
+        DB::table('roles')->insert([
+            'name' => 'User',
+        ]);
+        DB::table('users')->insert([
             'name' => 'Luis Ugueto',
             'email' => 'blink242@outlook.com',
             'password' => bcrypt('1234'),
+            'rol_id' => '1',
         ]);
+        
+        DB::table('videos')->insert([
+            'url' => 'https://youtu.be/kpFPcUTd3FQ',
+            'title' => 'Prueba',
+            'description' => 'prueba'
+        ]);
+        
     }
 }

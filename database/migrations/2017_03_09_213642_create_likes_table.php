@@ -14,6 +14,9 @@ class CreateLikesTable extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('number');
+            $table->integer('videos_id')->unsigned();
+            $table->foreign('videos_id')->references('id')->on('videos')->onDelete('Cascade');
             $table->timestamps();
         });
     }
