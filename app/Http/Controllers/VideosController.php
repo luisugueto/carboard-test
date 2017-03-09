@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Videos;
+use Youtube;
+use Exception;
+use Session;
+use Redirect;
 
 class VideosController extends Controller
 {
@@ -31,7 +35,7 @@ class VideosController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
@@ -42,7 +46,23 @@ class VideosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $videoId = Youtube::parseVidFromURL($request->url);
+        $relatedVideos = Youtube::getRelatedVideos($videoId);
+        if(Youtube::getVideoInfo($videoId)==false)
+        {
+           return redirect()->back()->with('message', 'Error.');
+        }
+        else{
+            $videoInfo = Youtube::getVideoInfo($videoId);
+            $createVideo = new Videos;
+            $createVideo->url = $request->url;
+            $createVideo->title = $request->title;
+            $createVideo->description = $request->description;
+            $createVideo->category = $request->category;
+            $createVideo->save();
+            
+            return redirect()->route('videos.index')->with('message', Session::flash('message','Video Ingresado Correctamente.'));
+        }
     }
 
     /**
