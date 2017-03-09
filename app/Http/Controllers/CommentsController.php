@@ -6,11 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class VideosController extends Controller
+class CommentsController extends Controller
 {
-    public function __construct(){
-        $this->middleware('auth', ['except'=>['index']]);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +15,7 @@ class VideosController extends Controller
      */
     public function index()
     {
-        return 'hola';
+        //
     }
 
     /**
