@@ -48,7 +48,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/') }}">Listado</a></li>
-                    @if(!Auth::guest())
+                    @if(!Auth::guest() && Auth::user()->rol_id == 1)
                         <li><a href="{{ route('videos.create') }}">Ingresar Video</a></li>
                     @endif
                 </ul>

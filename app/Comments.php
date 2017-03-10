@@ -11,7 +11,7 @@ class Comments extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'number', 'videos_id'];
+    protected $fillable = ['id', 'comentario', 'videos_id', 'user_id'];
 
     /**
      * The attributes that should be hidden for arrays.

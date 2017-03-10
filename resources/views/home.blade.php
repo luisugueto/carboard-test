@@ -28,8 +28,8 @@
                                 <p>{{ $video->description }}</p>
                                 @if(!Auth::guest())
                                     <div>
-                                        <h5>Me Gusta: <button onclick="pruebaa()"><img src="{{ asset('like.png') }}" width="20px"></img></button></h5>
-                                        <h5>No Me Gusta: <button><img src="{{ asset('unlike.png') }}" width="20px"></button></img></h5>
+                                        <h5>Me Gusta:  <label id="like{{ $video->id }}">{{ $video->likes()->count() }}</label> <button onclick="likee({{ $video->id }})"><img src="{{ asset('like.png') }}" width="20px"></img></button></h5>
+                                        <h5>No Me Gusta: <label id="unLike{{ $video->id }}">{{ $video->unLikes()->count() }}</label> <button onclick="unLikee({{ $video->id }})"><img src="{{ asset('unlike.png') }}" width="20px"></button></img></h5>
                                     </div>
                                 @endif
                                 <a class="btn btn-primary" href="{{ route('videos.ver', $video->id) }}">Ver Detalles del Video <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -47,11 +47,27 @@
 
 @section('scripts')
     
-        function pruebaa(){
-            $.post("/like/1/1", function(data, status){
-        alert("Data: " + data + "\nStatus: " + status);
-    });
-        }
+    function likee(id){
+        var data = {
+            id : id
+        };
+        
+        $.get("/like/"+id, function(data, status){
+            $("#unLike"+id).html(data.unLikes);
+            $("#like"+id).html(data.likes);
+        });
+    }
+    
+    function unLikee(id){
+        var data = {
+            id : id
+        };
+        
+        $.get("/unlike/"+id, function(data, status){
+            $("#unLike"+id).html(data.unLikes);
+            $("#like"+id).html(data.likes);
+        });
+    }
     
 @endsection
 

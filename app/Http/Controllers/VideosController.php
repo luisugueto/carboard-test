@@ -25,8 +25,7 @@ class VideosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         $videos =  Videos::paginate(5);
         
         return view('home', compact('videos'));
@@ -37,8 +36,7 @@ class VideosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         return view('create');
     }
 
@@ -48,8 +46,7 @@ class VideosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         if($request->type == 1){
             $videoId = Youtube::parseVidFromURL($request->url);
             $relatedVideos = Youtube::getRelatedVideos($videoId);
@@ -84,7 +81,6 @@ class VideosController extends Controller
             
             if($boolean == true)
             {
-            
                 $createVideo = new Videos;
                 $createVideo->type = 'archivo';
                 $file = $request->file;
@@ -111,8 +107,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         //
     }
 
@@ -122,8 +117,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         //
     }
 
@@ -134,8 +128,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         //
     }
 
@@ -145,8 +138,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         //
     }
     
@@ -156,7 +148,83 @@ class VideosController extends Controller
         return view('show', compact('videos'));
     }
     
-    public function like($user, $video){
+    public function like($video){
+        
+        $contadorLikes = Likes::where('videos_id', $video)->where('user_id', Auth::user()->id)
+                ->count();
+                
+        $contadorUnLikes = UnLikes::where('videos_id', $video)->where('user_id', Auth::user()->id)
+                ->count();
+        
+        if($contadorLikes == 0 && $contadorUnLikes == 0)
+        {
+            $vid = Videos::find($video); 
+            $vid->likes()->save(new Likes(['videos_id' => $vid->id, 'user_id' => Auth::user()->id]));    
+            
+            $contadorL = Likes::where('videos_id', $video)->count();
+            $contadorU = UnLikes::where('videos_id', $video)->count();
+            
+            return ['likes' => $contadorL, 'unLikes' => $contadorU];
+        }
+        elseif($contadorLikes == 0 && $contadorUnLikes > 0)
+        {
+            UnLikes::where('videos_id', $video)->where('user_id', Auth::user()->id)->delete();
+            $vid = Videos::find($video); 
+            $vid->likes()->save(new Likes(['videos_id' => $vid->id, 'user_id' => Auth::user()->id])); 
+            
+            $contadorL = Likes::where('videos_id', $video)->count();
+            $contadorU = UnLikes::where('videos_id', $video)->count();
+            
+            return ['likes' => $contadorL, 'unLikes' => $contadorU];
+        }
+        elseif($contadorLikes == 1)
+        {
+            $contadorL = Likes::where('videos_id', $video)->count();
+            $contadorU = UnLikes::where('videos_id', $video)->count();
+            
+            return ['likes' => $contadorL, 'unLikes' => $contadorU];
+        }
+    }
+    
+    public function unlike($video){
+        $contadorLikes = Likes::where('videos_id', $video)->where('user_id', Auth::user()->id)
+                ->count();
+                
+        $contadorUnLikes = UnLikes::where('videos_id', $video)->where('user_id', Auth::user()->id)
+                ->count();
+        
+        
+        if($contadorUnLikes == 0 && $contadorLikes == 0)
+        {
+            $vid = Videos::find($video); 
+            $vid->likes()->save(new UnLikes(['videos_id' => $vid->id, 'user_id' => Auth::user()->id]));    
+            
+            $contadorL = Likes::where('videos_id', $video)->count();
+            $contadorU = UnLikes::where('videos_id', $video)->count();
+            
+            return ['likes' => $contadorL, 'unLikes' => $contadorU];
+        }
+        elseif($contadorUnLikes == 0 && $contadorLikes > 0)
+        {
+            Likes::where('videos_id', $video)->where('user_id', Auth::user()->id)->delete();
+            $vid = Videos::find($video); 
+            $vid->likes()->save(new UnLikes(['videos_id' => $vid->id, 'user_id' => Auth::user()->id])); 
+            
+            $contadorL = Likes::where('videos_id', $video)->count();
+            $contadorU = UnLikes::where('videos_id', $video)->count();
+            
+            return ['likes' => $contadorL, 'unLikes' => $contadorU];
+        }
+        elseif($contadorLikes == 1)
+        {
+            $contadorL = Likes::where('videos_id', $video)->count();
+            $contadorU = UnLikes::where('videos_id', $video)->count();
+            
+            return ['likes' => $contadorL, 'unLikes' => $contadorU];
+        }
+    }
+    
+    public function comment(){
         
     }
 }

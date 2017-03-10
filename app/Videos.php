@@ -24,16 +24,16 @@ class Videos extends Model
     
     public function likes()
     {
-        return $this->hasOne('App\Likes', 'id');
+        return $this->hasMany('App\Likes');
     }
     
     public function unLikes()
     {
-        return $this->hasOne('App\UnLikes', 'id');
+        return $this->hasMany('App\UnLikes');
     }
     
     public function comments()
     {
-        return $this->hasOne('App\Comments', 'id');
+        return $this->hasMany('App\Comments');
     }
 }
