@@ -24,6 +24,11 @@ class Authenticate
                 return redirect()->guest('login');
             }
         }
+        
+        if(Auth::user()->id != 1)
+        {
+            return redirect()->route('videos.index');
+        }
 
         return $next($request);
     }

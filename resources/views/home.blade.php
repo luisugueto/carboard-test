@@ -26,12 +26,6 @@
                                 <h3>{{ $video->title }}</h3>
                                 <h4>{{ $video->category }}</h4>
                                 <p>{{ $video->description }}</p>
-                                @if(!Auth::guest())
-                                    <div>
-                                        <h5>Me Gusta:  <label id="like{{ $video->id }}">{{ $video->likes()->count() }}</label> <button onclick="likee({{ $video->id }})"><img src="{{ asset('like.png') }}" width="20px"></img></button></h5>
-                                        <h5>No Me Gusta: <label id="unLike{{ $video->id }}">{{ $video->unLikes()->count() }}</label> <button onclick="unLikee({{ $video->id }})"><img src="{{ asset('unlike.png') }}" width="20px"></button></img></h5>
-                                    </div>
-                                @endif
                                 <a class="btn btn-primary" href="{{ route('videos.ver', $video->id) }}">Ver Detalles del Video <span class="glyphicon glyphicon-chevron-right"></span></a>
                             </div>
                            

@@ -19,7 +19,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
     Route::get('/like/{video}', ['uses' => 'VideosController@like', 'as' => 'videos.like']);
     Route::get('/unlike/{video}', ['uses' => 'VideosController@unlike', 'as' => 'videos.unlike']);
-    Route::get('/comment/{video}', ['uses' => 'VideosController@comment', 'as' => 'videos.comment']);
+    
+    Route::resource('comment', 'CommentsController');
     Route::resource('videos', 'VideosController');
 });
 

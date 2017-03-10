@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'rol_id',
+        'id','name', 'email', 'password', 'rol_id',
     ];
 
     /**
@@ -27,5 +27,12 @@ class User extends Authenticatable
     public function rol()
     {
         return $this->hasOne('App\Roles', 'rol_id');
+    }
+    
+    
+    
+     public function comment()
+    {
+        return $this->hasOne('App\Comments', 'id');
     }
 }

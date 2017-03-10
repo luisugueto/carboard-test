@@ -223,8 +223,4 @@ class VideosController extends Controller
             return ['likes' => $contadorL, 'unLikes' => $contadorU];
         }
     }
-    
-    public function comment(){
-        
-    }
 }

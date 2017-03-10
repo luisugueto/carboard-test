@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Videos;
+use Auth;
+use App\Comments;
+use Redirect;
+use Session;
 
 class CommentsController extends Controller
 {
@@ -36,7 +41,10 @@ class CommentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $video = Videos::find($request->id);
+        $video->comments()->save(new Comments(['comentario'=>$request->comentario,'videos_id' => $video->id, 'user_id' => Auth::user()->id]));  
+        
+        return redirect()->back();
     }
 
     /**
