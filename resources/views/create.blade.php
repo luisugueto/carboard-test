@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Ingresar</div>
                 <br>
-                {{ Form::open(['route' => 'videos.store', 'class'=>'form-horizontal']) }}
+                {{ Form::open(['route' => 'videos.store', 'class'=>'form-horizontal', 'files'=>true]) }}
                     
                     <div class="form-group">
                         {{ Form::label('tipo', 'Tipo', ['class'=>'control-label col-md-2']) }}

@@ -12,9 +12,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
+            'id' => '1',
             'name' => 'Admin',
         ]);
         DB::table('roles')->insert([
+            'id' => '2',
             'name' => 'User',
         ]);
         DB::table('users')->insert([

@@ -13,7 +13,7 @@
 
     Route::get('/', 'VideosController@index');
     Route::get('/description/{id}', ['uses' => 'VideosController@ver', 'as' => 'videos.ver']);
-
+    Route::resource('users', 'UserController');
 Route::group(['middleware' => 'web'], function () {
    
     Route::auth();

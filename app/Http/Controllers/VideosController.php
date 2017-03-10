@@ -50,23 +50,58 @@ class VideosController extends Controller
      */
     public function store(Request $request)
     {
-        $videoId = Youtube::parseVidFromURL($request->url);
-        $relatedVideos = Youtube::getRelatedVideos($videoId);
-        
-        if(Youtube::getVideoInfo($videoId)==false)
-        {
-            return redirect()->back()->with('message-error', 'Error.');
-        }
-        else{
-            $videoInfo = Youtube::getVideoInfo($videoId);
-            $createVideo = new Videos;
-            $createVideo->url = $videoId;
-            $createVideo->title = $request->title;
-            $createVideo->description = $request->description;
-            $createVideo->category = $request->category;
-            $createVideo->save();
+        if($request->type == 1){
+            $videoId = Youtube::parseVidFromURL($request->url);
+            $relatedVideos = Youtube::getRelatedVideos($videoId);
             
-            return redirect()->route('videos.index')->with('message', Session::flash('message','Video Ingresado Correctamente.'));
+            if(Youtube::getVideoInfo($videoId)==false)
+            {
+                return redirect()->back()->with('message-error', 'Error.');
+            }
+            else{
+                $videoInfo = Youtube::getVideoInfo($videoId);
+                $createVideo = new Videos;
+                $createVideo->type = 'enlace';
+                $createVideo->name = $videoId;
+                $createVideo->title = $request->title;
+                $createVideo->description = $request->description;
+                $createVideo->category = $request->category;
+                $createVideo->save();
+               
+                return redirect()->route('videos.index')->with('message', Session::flash('message','Video Ingresado Correctamente.'));
+            }
+        }
+        
+        elseif($request->type == 2)
+        {
+            $boolean = true;
+            switch ($request->file->getclientoriginalextension()) 
+            {
+                case 'wmv': $boolean = true; break;
+                case 'mp4': $boolean = true; break;
+                default: $boolean = false; break;
+            }
+            
+            if($boolean == true)
+            {
+            
+                $createVideo = new Videos;
+                $createVideo->type = 'archivo';
+                $file = $request->file;
+                $fileName = $file->getClientOriginalName();
+                \Storage::disk('videos')->put($fileName, \File::get($file));
+                $createVideo->name = $fileName;
+                $createVideo->title = $request->title;
+                $createVideo->description = $request->description;
+                $createVideo->category = $request->category;
+                $createVideo->save();
+                
+                return redirect()->route('videos.index')->with('message', Session::flash('message','Video Ingresado Correctamente.'));
+            }
+            else
+            {
+                return redirect()->back()->with('message-error', 'Error.');
+            }
         }
     }
 

@@ -11,9 +11,15 @@
                         <div class="row" style="padding-left: 10px">
                             <div class="col-md-7">
                                 <a href="#">
-                                    <iframe width="400" height="300"
-                                        src="https://www.youtube.com/embed/{{ $video->url }}">
-                                    </iframe>
+                                    @if($video->type == 'enlace')
+                                        <iframe width="400" height="300"
+                                            src="https://www.youtube.com/embed/{{ $video->name }}">
+                                        </iframe>
+                                    @elseif($video->type == 'archivo')
+                                        <video id='video-player' preload='metadata' controls width="400" height="300">
+                                              <source src="vid/{{ $video->name }}" type="video/mp4">
+                        
+                                    @endif
                                 </a>
                             </div>
                             <div class="col-md-5">
