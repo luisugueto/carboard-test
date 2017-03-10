@@ -23,10 +23,21 @@
         .fa-btn {
             margin-right: 6px;
         }
+        .skyblue{
+            background-color: skyblue;
+        }
+        
+        .white{
+            color: white;
+            cursor: pointer !important;
+        }
+        a{
+            cursor: pointer;
+        }
     </style>
 </head>
 <body id="app-layout">
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-default navbar-static-top skyblue">
         <div class="container">
             <div class="navbar-header">
 
@@ -39,7 +50,7 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a style="color:white" class="navbar-brand" href="{{ url('/') }}">
                     Laravel
                 </a>
             </div>
@@ -47,9 +58,9 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">Listado</a></li>
+                    <li><a style="color:white" href="{{ url('/') }}">Videos</a></li>
                     @if(!Auth::guest() && Auth::user()->rol_id == 1)
-                        <li><a href="{{ route('videos.create') }}">Ingresar Video</a></li>
+                        <li><a style="color:white" href="{{ route('videos.create') }}">Ingresar Video</a></li>
                     @endif
                 </ul>
 
@@ -57,11 +68,11 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Entrar</a></li>
-                        <li><a href="{{ url('/register') }}">Registrarse</a></li>
+                        <li><a style="color:white" href="{{ url('/login') }}">Entrar</a></li>
+                        <li><a style="color:white" href="{{ url('/register') }}">Registrarse</a></li>
                     @else
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <a style="color:white" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
@@ -74,9 +85,46 @@
             </div>
         </div>
     </nav>
+    
+    @if($errors->any())
+    	<div class="alert alert-danger alert-dismissible" role="alert">
+      		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      		<ul>
+      			@foreach($errors->all() as $error)
+      				<li>{!! $error !!}</li>
+      			@endforeach	
+      		</ul>
+      	</div>
+    @endif
+    
+    @if(Session::has('message-error'))
+    	<div class="alert alert-danger alert-dismissible" role="alert">
+    		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    			<span aria-hidden="true">&times;</span>
+    		</button>
+    		<ul>
+    			{{ Session::get('message-error') }}
+    		</ul>
+    	</div>
+    @endif
+
+
+    @if(Session::has('message'))
+    	<div class="alert alert-success alert-dismissible" role="alert">
+    			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    			<ul>
+    				{{Session::get('message')}}
+    			</ul>
+    	</div>
+    @endif
 
     @yield('content')
 
+   <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container" align="center"><br>
+            <label>© Luis Ugueto - Prueba CardBoard Mexico 2017</label>
+        </div>
+    </nav>
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js" integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

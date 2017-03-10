@@ -53,7 +53,8 @@ class VideosController extends Controller
             
             if(Youtube::getVideoInfo($videoId)==false)
             {
-                return redirect()->back()->with('message-error', 'Error.');
+                Session::flash('message-error', 'Error: No se pudo Ingresar el Video (Los videos tienen que ser de Youtube y/o formato mp4).');
+                return Redirect()->back();
             }
             else{
                 $videoInfo = Youtube::getVideoInfo($videoId);
@@ -65,7 +66,8 @@ class VideosController extends Controller
                 $createVideo->category = $request->category;
                 $createVideo->save();
                
-                return redirect()->route('videos.index')->with('message', Session::flash('message','Video Ingresado Correctamente.'));
+                Session::flash('message', 'Video Ingresado Correctamente.');
+                return redirect()->route('videos.index');
             }
         }
         
@@ -92,11 +94,14 @@ class VideosController extends Controller
                 $createVideo->category = $request->category;
                 $createVideo->save();
                 
-                return redirect()->route('videos.index')->with('message', Session::flash('message','Video Ingresado Correctamente.'));
+                Session::flash('message', 'Video Ingresado Correctamente.');
+                return redirect()->route('videos.index');
             }
             else
             {
-                return redirect()->back()->with('message-error', 'Error.');
+                
+                Session::flash('message-error', 'Error: No se pudo Ingresar el Video (Los videos tienen que ser de Youtube y/o formato mp4).');
+                return redirect()->back();
             }
         }
     }

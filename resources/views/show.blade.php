@@ -78,70 +78,70 @@
     <div class="container">
     <h2 align="center">Video: {{ $videos->title }}</h2>
     <hr>
-			<div class="row">
-				<div class="detailBox">
-				    <div class="titleBox">
-				    @if($videos->type == 'enlace')
-                        <iframe width="560" height="315"
-                            src="https://www.youtube.com/embed/{{ $videos->name }}">
-                        </iframe>
-                    @elseif($videos->type == 'archivo')
-                    	
-                    	
-                        <video id='video-player' preload='metadata' controls width="560" height="315">
-                              <source src="<?php echo '../vid/'.$videos->name ?>" type="video/mp4">
-        
-                    @endif
+		<div class="row">
+			<div class="detailBox">
+			    <div class="titleBox">
+			    @if($videos->type == 'enlace')
+                    <iframe width="560" height="315"
+                        src="https://www.youtube.com/embed/{{ $videos->name }}">
+                    </iframe>
+                @elseif($videos->type == 'archivo')
+                	
+                	
+                    <video id='video-player' preload='metadata' controls width="560" height="315">
+                          <source src="<?php echo '../vid/'.$videos->name ?>" type="video/mp4">
+    
+                @endif
 
-				    </div>
-					<hr>
-					<div class="likeDescription">
-						@if(!Auth::guest())
+			    </div>
+				<hr>
+				<div class="likeDescription">
+					@if(!Auth::guest())
+				 	<div>
+				 		Me Gusta: <label id="like{{ $videos->id }}">{{ $videos->likes()->count() }}</label> <div class="pull-right" style="margin-right: 10px"><button onclick="likee({{ $videos->id }})"><img src="{{ asset('like.png') }}" width="20px"></img></button>
+				 	</div>
+				    <div style="padding-top: 10px">
+				 		No Me Gusta: <label id="unLike{{ $videos->id }}">{{ $videos->unLikes()->count() }}</label><div class="pull-right" style="margin-right: 10px"><button onclick="unLikee({{ $videos->id }})"><img src="{{ asset('unlike.png') }}" width="20px"></button>
+				 	</div>
+				 	@else
 					 	<div>
 					 		Me Gusta: <label id="like{{ $videos->id }}">{{ $videos->likes()->count() }}</label> <div class="pull-right" style="margin-right: 10px"><button onclick="likee({{ $videos->id }})"><img src="{{ asset('like.png') }}" width="20px"></img></button>
 					 	</div>
 					    <div style="padding-top: 10px">
 					 		No Me Gusta: <label id="unLike{{ $videos->id }}">{{ $videos->unLikes()->count() }}</label><div class="pull-right" style="margin-right: 10px"><button onclick="unLikee({{ $videos->id }})"><img src="{{ asset('unlike.png') }}" width="20px"></button>
 					 	</div>
-					 	@else
-						 	<div>
-						 		Me Gusta: <label id="like{{ $videos->id }}">{{ $videos->likes()->count() }}</label> <div class="pull-right" style="margin-right: 10px"><button onclick="likee({{ $videos->id }})"><img src="{{ asset('like.png') }}" width="20px"></img></button>
-						 	</div>
-						    <div style="padding-top: 10px">
-						 		No Me Gusta: <label id="unLike{{ $videos->id }}">{{ $videos->unLikes()->count() }}</label><div class="pull-right" style="margin-right: 10px"><button onclick="unLikee({{ $videos->id }})"><img src="{{ asset('unlike.png') }}" width="20px"></button>
-						 	</div>
-					 	@endif
-				    </div>
-				   	<hr>
-				    <div class="taskDescription">
-				    	Description: {{ $videos->description }}
-				    </div>
-				    <hr>
-			    	<div class="actionBox">
-			    		Comentarios: 
-				        <ul class="commentList">
-				        	@foreach($videos->comments as $comment)
-				            <li>
-				                <div class="commentText">
-				                    <p class=""><h6>{{ $comment->user->name }} dice:</h6> {{ $comment->comentario }}</p> <span class="date sub-text">on {{ $comment->updated_at }}</span>
-				                </div>
-				            </li>
-				            @endforeach
-				        </ul>
-				        {{ Form::open(['route' => 'comment.store', 'class'=>'form-inline', 'role'=>'form']) }}
-				  			<input type="hidden" value="{{ $videos->id }}" name="id">
-				            <div class="form-group col-md-10">
-				                <input class="form-control" type="text" placeholder="Tu Comentario" name="comentario" />
-				            </div>
-				            <div class="form-group">
-				                <button class="btn btn-default">Agregar</button>
-				            </div>
-				        {{ Form::close() }}
-				       
-			    	</div>
+				 	@endif
 			    </div>
-			</div>
+			   	<hr>
+			    <div class="taskDescription">
+			    	Description: {{ $videos->description }}
+			    </div>
+			    <hr>
+		    	<div class="actionBox">
+		    		Comentarios: 
+			        <ul class="commentList">
+			        	@foreach($videos->comments as $comment)
+			            <li>
+			                <div class="commentText">
+			                    <p class=""><h6>{{ $comment->user->name }} dice:</h6> {{ $comment->comentario }}</p> <span class="date sub-text">on {{ $comment->updated_at }}</span>
+			                </div>
+			            </li>
+			            @endforeach
+			        </ul>
+			        {{ Form::open(['route' => 'comment.store', 'class'=>'form-inline', 'role'=>'form']) }}
+			  			<input type="hidden" value="{{ $videos->id }}" name="id">
+			            <div class="form-group col-md-10">
+			                <input class="form-control" type="text" placeholder="Tu Comentario" name="comentario" />
+			            </div>
+			            <div class="form-group">
+			                <button class="btn btn-default">Agregar</button>
+			            </div>
+			        {{ Form::close() }}
+			       
+		    	</div>
+		    </div>
 		</div>
+	</div>
 @endsection
 
 

@@ -52,7 +52,7 @@ class UserController extends Controller
             $user->rol_id = 2;
             $user->remember_token = Session::token();
             $user->save();
-            Session::flash('message', 'USUARIO REGISTRADO CORRECTAMENTE');
+            Session::flash('message', 'Usted se ha registrado Exitosamente.');
             if(Auth::attempt(['email' => $request['email'], 'password' => $request['password']]))
             {
                 return Redirect::to('/');
