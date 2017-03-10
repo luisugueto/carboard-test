@@ -23,12 +23,5 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('1234'),
             'rol_id' => '1',
         ]);
-        
-        DB::table('videos')->insert([
-            'url' => 'https://youtu.be/kpFPcUTd3FQ',
-            'title' => 'Prueba',
-            'description' => 'prueba'
-        ]);
-        
     }
 }

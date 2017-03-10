@@ -17,7 +17,8 @@
 Route::group(['middleware' => 'web'], function () {
    
     Route::auth();
-    
+    Route::post('/like/{user}/{video}', ['uses' => 'VideosController@like', 'as' => 'videos.like']);
+    Route::post('/unlike/{user}/{video}', ['uses' => 'VideosController@unlike', 'as' => 'videos.unlike']);
     Route::resource('videos', 'VideosController');
 });
 

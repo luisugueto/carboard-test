@@ -17,6 +17,8 @@ class CreateCommentsTable extends Migration
             $table->text('comentario');
             $table->integer('videos_id')->unsigned();
             $table->foreign('videos_id')->references('id')->on('videos')->onDelete('Cascade');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('Cascade');
             $table->timestamps();
         });
     }

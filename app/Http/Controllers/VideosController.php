@@ -10,6 +10,10 @@ use Youtube;
 use Exception;
 use Session;
 use Redirect;
+use DB;
+use App\Likes;
+use App\UnLikes;
+use Auth;
 
 class VideosController extends Controller
 {
@@ -23,7 +27,7 @@ class VideosController extends Controller
      */
     public function index()
     {
-        $videos = Videos::all();
+        $videos =  Videos::paginate(5);
         
         return view('home', compact('videos'));
     }
@@ -48,14 +52,15 @@ class VideosController extends Controller
     {
         $videoId = Youtube::parseVidFromURL($request->url);
         $relatedVideos = Youtube::getRelatedVideos($videoId);
+        
         if(Youtube::getVideoInfo($videoId)==false)
         {
-           return redirect()->back()->with('message', 'Error.');
+            return redirect()->back()->with('message-error', 'Error.');
         }
         else{
             $videoInfo = Youtube::getVideoInfo($videoId);
             $createVideo = new Videos;
-            $createVideo->url = $request->url;
+            $createVideo->url = $videoId;
             $createVideo->title = $request->title;
             $createVideo->description = $request->description;
             $createVideo->category = $request->category;
@@ -112,6 +117,11 @@ class VideosController extends Controller
     
     public function ver($id){
         $videos = Videos::find($id);
-        dd($videos);
+        
+        return view('show', compact('videos'));
+    }
+    
+    public function like($user, $video){
+        
     }
 }
