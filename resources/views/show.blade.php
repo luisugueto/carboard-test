@@ -81,17 +81,36 @@
 			<div class="row">
 				<div class="detailBox">
 				    <div class="titleBox">
-				    	<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ $videos->name }}"  allowfullscreen></iframe></label>
+				    @if($videos->type == 'enlace')
+                        <iframe width="560" height="315"
+                            src="https://www.youtube.com/embed/{{ $videos->name }}">
+                        </iframe>
+                    @elseif($videos->type == 'archivo')
+                    	
+                    	
+                        <video id='video-player' preload='metadata' controls width="560" height="315">
+                              <source src="<?php echo '../vid/'.$videos->name ?>" type="video/mp4">
+        
+                    @endif
 
 				    </div>
 					<hr>
 					<div class="likeDescription">
+						@if(!Auth::guest())
 					 	<div>
 					 		Me Gusta: <label id="like{{ $videos->id }}">{{ $videos->likes()->count() }}</label> <div class="pull-right" style="margin-right: 10px"><button onclick="likee({{ $videos->id }})"><img src="{{ asset('like.png') }}" width="20px"></img></button>
 					 	</div>
 					    <div style="padding-top: 10px">
 					 		No Me Gusta: <label id="unLike{{ $videos->id }}">{{ $videos->unLikes()->count() }}</label><div class="pull-right" style="margin-right: 10px"><button onclick="unLikee({{ $videos->id }})"><img src="{{ asset('unlike.png') }}" width="20px"></button>
 					 	</div>
+					 	@else
+						 	<div>
+						 		Me Gusta: <label id="like{{ $videos->id }}">{{ $videos->likes()->count() }}</label> <div class="pull-right" style="margin-right: 10px"><button onclick="likee({{ $videos->id }})"><img src="{{ asset('like.png') }}" width="20px"></img></button>
+						 	</div>
+						    <div style="padding-top: 10px">
+						 		No Me Gusta: <label id="unLike{{ $videos->id }}">{{ $videos->unLikes()->count() }}</label><div class="pull-right" style="margin-right: 10px"><button onclick="unLikee({{ $videos->id }})"><img src="{{ asset('unlike.png') }}" width="20px"></button>
+						 	</div>
+					 	@endif
 				    </div>
 				   	<hr>
 				    <div class="taskDescription">
@@ -129,25 +148,33 @@
 @section('scripts')
     
     function likee(id){
-        var data = {
-            id : id
-        };
-        
-        $.get("/like/"+id, function(data, status){
-            $("#unLike"+id).html(data.unLikes);
-            $("#like"+id).html(data.likes);
-        });
+    	@if(!Auth::guest())
+	        var data = {
+	            id : id
+	        };
+	        
+	        $.get("/like/"+id, function(data, status){
+	            $("#unLike"+id).html(data.unLikes);
+	            $("#like"+id).html(data.likes);
+	        });
+	    @else
+	    	alert('Para dar Me Gusta, Por favor Iniciar Sesión.');
+	    @endif
     }
     
     function unLikee(id){
-        var data = {
-            id : id
-        };
-        
-        $.get("/unlike/"+id, function(data, status){
-            $("#unLike"+id).html(data.unLikes);
-            $("#like"+id).html(data.likes);
-        });
-    }
+    	@if(!Auth::guest())
+	        var data = {
+	            id : id
+	        };
+	        
+	        $.get("/unlike/"+id, function(data, status){
+	            $("#unLike"+id).html(data.unLikes);
+	            $("#like"+id).html(data.likes);
+	        });
+         @else
+	    	alert('Para dar No Me Gusta, Por favor Iniciar Sesión.');
+	    @endif
+	}
     
 @endsection
